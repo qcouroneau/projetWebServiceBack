@@ -41,6 +41,20 @@ public class Cave {
 		}
 		return b;
 	}
+
+	public Boolean bouteilleExiste(int _id) {
+		
+		Iterator<Map.Entry<Bouteille, Integer>> iterator = this.caveAVin.entrySet().iterator();
+		Boolean trouve = false;
+		
+		while(iterator.hasNext() && !trouve) {
+			Map.Entry<Bouteille, Integer> entry = iterator.next();
+			if(entry.getKey().getId() == _id) {
+				trouve = true;
+			}
+		}
+		return trouve;
+	}
 	
 	public HashMap getCave() {
 		return this.caveAVin;

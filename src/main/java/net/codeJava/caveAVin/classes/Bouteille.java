@@ -11,13 +11,21 @@ public class Bouteille {
 	private String description;
 	private Image image;
 	
-	public Bouteille(int _id, String _nom, String _cepage, String _annee, String _description, Image _image) {
+	public Bouteille(String _nom, String _cepage, String _annee, String _description, Image _image) {
 		this.id = globalID++;
 		this.nom = _nom;
 		this.cepage = _cepage;
 		this.annee = _annee;
 		this.description = _description;
 		this.image = _image;
+	}
+	
+	public Bouteille(String _nom, String _cepage, String _annee, String _description) {
+		this.id = globalID++;
+		this.nom = _nom;
+		this.cepage = _cepage;
+		this.annee = _annee;
+		this.description = _description;
 	}
 	
 	public int getId() {
