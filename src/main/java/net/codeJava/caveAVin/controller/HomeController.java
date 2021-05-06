@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,20 +26,20 @@ import net.codeJava.caveAVin.classes.Cave;
 public class HomeController {
 	
 	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
-	public void ajoutBouteille(@RequestBody Map<String, String> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String nom = foo.get("nom");
-		String cepage = foo.get("cepage");
-		String annee = foo.get("annee");
-		String description = foo.get("description");
-		int quantite= Integer.parseInt(foo.get("quantite"));
+	public void ajoutBouteille(@RequestBody MultiValueMap<String, String> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String nom = foo.get("nom").toString().replaceAll("[\\[\\]]", "");
+		String cepage = foo.get("cepage").toString().replaceAll("[\\[\\]]", "");
+		String annee = foo.get("annee").toString().replaceAll("[\\[\\]]", "");
+		String description = foo.get("description").toString().replaceAll("[\\[\\]]", "");
+		int quantite= Integer.parseInt(foo.get("quantite").toString().replaceAll("[\\[\\]]", ""));
 		
 		Cave.getInstance().ajoutNouvelleBouteille(new Bouteille(nom, cepage, annee, description), quantite);
 	}
 	
 	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE)
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
 	public void supprimerBouteille(@RequestBody Map<String, Integer> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int id = foo.get("id");
@@ -48,7 +50,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/modifierBouteille", method = RequestMethod.POST)
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
 	public void modifierQuantite(@RequestBody Map<String, Integer> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int id = foo.get("id");
@@ -59,8 +61,8 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value="/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "http://localhost:3000")
+	@RequestMapping(value="/recupererBouteilles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
 	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HashMap<Bouteille, Integer> caveAVin = Cave.getInstance().getCave();
