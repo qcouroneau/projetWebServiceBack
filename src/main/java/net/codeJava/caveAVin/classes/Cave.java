@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Cave {
 	private static final Cave cave = new Cave();
-	private Map caveAVin = new HashMap<Bouteille, Integer>();
+	private HashMap caveAVin = new HashMap<Bouteille, Integer>();
 	
 	public static final Cave getInstance() {
 		return cave;
@@ -14,6 +14,11 @@ public class Cave {
 	
 	public void ajoutNouvelleBouteille(Bouteille bouteille, int quantite) {
 		this.caveAVin.put(bouteille, quantite);
+	}
+	
+	public void supprimerBouteille(int _id) {
+		Bouteille b = this.findBouteille(_id);
+		this.caveAVin.remove(b);
 	}
 	
 	public Bouteille findBouteille(int _id) {
@@ -24,7 +29,7 @@ public class Cave {
 		
 		while(iterator.hasNext() && !trouve) {
 			Map.Entry<Bouteille, Integer> entry = iterator.next();
-			if(entry.getKey().getID() == _id) {
+			if(entry.getKey().getId() == _id) {
 				b = entry.getKey();
 				trouve = true;
 			}
@@ -34,9 +39,10 @@ public class Cave {
 	
 	public void changerQuantite(int _id, int quantite) {
 		Bouteille b = this.findBouteille(_id);
-		
-		if(b != null) {
-			this.caveAVin.replace(b, (int) this.caveAVin.get(b) + quantite);
-		}
+		this.caveAVin.replace(b, (int) this.caveAVin.get(b) + quantite);
+	}
+	
+	public HashMap getCave() {
+		return this.caveAVin;
 	}
 }

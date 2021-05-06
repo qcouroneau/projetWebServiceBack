@@ -21,15 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HomeController {
 	
-	@RequestMapping(value="/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/modifierQuantite/{int}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "http://localhost:3000")
 	@ResponseBody
-	public void tuto1(@RequestBody Map<String, String> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-	}
-	
-	@RequestMapping(value="/controller/{string}", method = RequestMethod.GET)
-	@ResponseBody
-	public String foo( @PathVariable("string") String string) {
-		return string;
+	public void modifierQuantite(@PathVariable("int") int quantite, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
 	}
 }
