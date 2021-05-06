@@ -21,6 +21,11 @@ public class Cave {
 		this.caveAVin.remove(b);
 	}
 	
+	public void changerQuantite(int _id, int quantite) {
+		Bouteille b = this.findBouteille(_id);
+		this.caveAVin.replace(b, (int) this.caveAVin.get(b) + quantite);
+	}
+	
 	public Bouteille findBouteille(int _id) {
 		
 		Iterator<Map.Entry<Bouteille, Integer>> iterator = this.caveAVin.entrySet().iterator();
@@ -35,11 +40,6 @@ public class Cave {
 			}
 		}
 		return b;
-	}
-	
-	public void changerQuantite(int _id, int quantite) {
-		Bouteille b = this.findBouteille(_id);
-		this.caveAVin.replace(b, (int) this.caveAVin.get(b) + quantite);
 	}
 	
 	public HashMap getCave() {

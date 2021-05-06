@@ -6,12 +6,16 @@ public class Bouteille {
 	private static int globalID = 0;
 	private int id;
 	private String nom;
+	private String cepage;
+	private String annee;
 	private String description;
 	private Image image;
 	
-	public Bouteille(int _id, String _nom, String _description, Image _image) {
+	public Bouteille(int _id, String _nom, String _cepage, String _annee, String _description, Image _image) {
 		this.id = globalID++;
 		this.nom = _nom;
+		this.cepage = _cepage;
+		this.annee = _annee;
 		this.description = _description;
 		this.image = _image;
 	}
@@ -30,6 +34,22 @@ public class Bouteille {
 
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+	
+	public String getCepage() {
+		return cepage;
+	}
+
+	public void setCepage(String cepage) {
+		this.cepage = cepage;
+	}
+
+	public String getAnnee() {
+		return annee;
+	}
+
+	public void setAnnee(String annee) {
+		this.annee = annee;
 	}
 
 	public String getDescription() {
