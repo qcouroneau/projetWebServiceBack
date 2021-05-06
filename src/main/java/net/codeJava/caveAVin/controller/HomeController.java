@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,17 +21,24 @@ public class HomeController {
 		
 	}
 	
-	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.PUT)
+	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE)
 	@CrossOrigin(origins = "http://localhost:3000")
 	@ResponseBody
 	public void supprimerBouteille(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 	}
 	
-	@RequestMapping(value="/modifierBouteille", method = RequestMethod.PUT)
+	@RequestMapping(value="/modifierBouteille", method = RequestMethod.POST)
 	@CrossOrigin(origins = "http://localhost:3000")
 	@ResponseBody
 	public void modifierQuantite(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+	}
+	
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	@CrossOrigin(origins = "http://localhost:3000")
+	@ResponseBody
+	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 	}
 }
