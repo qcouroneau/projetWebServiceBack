@@ -5,11 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Cave {
-	private static final Cave cave = new Cave();
 	private HashMap caveAVin = new HashMap<Bouteille, Integer>();
 	
-	public static final Cave getInstance() {
-		return cave;
+	public Cave() {
+		
 	}
 	
 	public void ajoutNouvelleBouteille(Bouteille bouteille, int quantite) {

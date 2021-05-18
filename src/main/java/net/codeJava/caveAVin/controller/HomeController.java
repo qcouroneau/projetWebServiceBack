@@ -11,19 +11,44 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.google.gson.Gson;
 
+import jsonObject.LoginForm;
+import jsonObject.ModifForm;
 import net.codeJava.caveAVin.classes.Bouteille;
-import net.codeJava.caveAVin.classes.Cave;
+import net.codeJava.caveAVin.classes.ListOfUsers;
+import net.codeJava.caveAVin.classes.User;
 
 @Controller
 public class HomeController {
+	
+	private User currentUser = null;
+	
+	@PostMapping(value = "/connexion", consumes = "application/json", produces = "application/json")
+	public void connexion(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		for(User u: ListOfUsers.getInstance().getList()) {
+			if(u.getLogin().equals(loginForm.getLogin()) && u.getPassword().equals(loginForm.getPassword())) {
+				this.currentUser = u;
+			}
+		}
+		
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+		
+		if(this.currentUser != null) {
+			String userconnected = new Gson().toJson(this.currentUser);
+			
+		    response.getWriter().write(userconnected);
+		} else {
+		    response.getWriter().write("-1");
+		}
+	}
 	
 	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -35,29 +60,24 @@ public class HomeController {
 		String description = foo.get("description").toString().replaceAll("[\\[\\]]", "");
 		int quantite= Integer.parseInt(foo.get("quantite").toString().replaceAll("[\\[\\]]", ""));
 		
-		Cave.getInstance().ajoutNouvelleBouteille(new Bouteille(nom, cepage, annee, description), quantite);
+		this.currentUser.getCave().ajoutNouvelleBouteille(new Bouteille(nom, cepage, annee, description), quantite);
 	}
 	
-	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE)
+	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
-	@ResponseBody
-	public void supprimerBouteille(@RequestBody Map<String, Integer> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		int id = foo.get("id");
-		
-		if(Cave.getInstance().bouteilleExiste(id)) {
-			Cave.getInstance().supprimerBouteille(id);
+	public void supprimerBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
+			this.currentUser.getCave().supprimerBouteille(modifForm.getId());
 		}
 	}
 	
-	@RequestMapping(value="/modifierBouteille", method = RequestMethod.POST)
-	@CrossOrigin(origins = "http://localhost:4200")
-	@ResponseBody
-	public void modifierQuantite(@RequestBody Map<String, Integer> foo, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		int id = foo.get("id");
-		int quantite = foo.get("quantite");
-		
-		if(Cave.getInstance().bouteilleExiste(id)) {
-			Cave.getInstance().changerQuantite(id, quantite);
+	@PostMapping(value = "/modifierBouteille", consumes = "application/json", produces = "application/json")
+	@CrossOrigin(origins = "http://localhost:4200")	
+	public void modifierQuantite(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+				
+		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
+			this.currentUser.getCave().changerQuantite(modifForm.getId(), modifForm.getQuantite());
 		}
 	}
 	
@@ -65,7 +85,7 @@ public class HomeController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
 	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		HashMap<Bouteille, Integer> caveAVin = Cave.getInstance().getCave();
+		HashMap<Bouteille, Integer> caveAVin = this.currentUser.getCave().getCave();
 		String bouteillesJsonString = new Gson().toJson(caveAVin.keySet());
 		
 		response.setContentType("application/json");
