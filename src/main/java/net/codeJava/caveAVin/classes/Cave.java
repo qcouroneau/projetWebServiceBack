@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class Cave {
-	private HashMap caveAVin = new HashMap<Bouteille, Integer>();
+	private HashMap<Bouteille, Integer> caveAVin = new HashMap<Bouteille, Integer>();
 	
 	public Cave() {
 		
@@ -55,7 +55,7 @@ public class Cave {
 		return trouve;
 	}
 	
-	public HashMap getCave() {
+	public HashMap<Bouteille, Integer> getCave() {
 		return this.caveAVin;
 	}
 }
