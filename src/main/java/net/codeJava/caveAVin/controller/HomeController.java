@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 
-import jsonObject.LoginForm;
-import jsonObject.ModifForm;
 import net.codeJava.caveAVin.classes.Bouteille;
 import net.codeJava.caveAVin.classes.ListOfUsers;
 import net.codeJava.caveAVin.classes.User;
+import net.codeJava.caveAVin.jsonObject.LoginForm;
+import net.codeJava.caveAVin.jsonObject.ModifForm;
 
 @Controller
 public class HomeController {

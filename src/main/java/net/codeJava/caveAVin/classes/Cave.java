@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import jsonObject.ModifForm;
+import net.codeJava.caveAVin.jsonObject.ModifForm;
 
 public class Cave {
 	private HashMap<Bouteille, Integer> caveAVin = new HashMap<Bouteille, Integer>();
