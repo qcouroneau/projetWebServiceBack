@@ -66,8 +66,14 @@ public class HomeController {
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void supprimerBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+		
 		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
 			this.currentUser.getCave().supprimerBouteille(modifForm.getId());
+			response.getWriter().write("1");
+		} else {
+			response.getWriter().write("-1");
 		}
 	}
 	
@@ -75,8 +81,14 @@ public class HomeController {
 	@CrossOrigin(origins = "http://localhost:4200")	
 	public void modifierQuantite(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 				
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    		
 		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
-			this.currentUser.getCave().changerQuantite(modifForm.getId(), modifForm.getQuantite());
+			this.currentUser.getCave().modifierBouteille(modifForm);
+			response.getWriter().write("1");
+		} else {
+			response.getWriter().write("-1");
 		}
 	}
 	
