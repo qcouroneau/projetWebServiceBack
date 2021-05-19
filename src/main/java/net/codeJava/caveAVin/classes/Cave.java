@@ -59,7 +59,11 @@ public class Cave {
 
 	public void modifierBouteille(ModifForm modifForm) {
 		Bouteille b = this.findBouteille(modifForm.getId());
+		int quantite = this.caveAVin.get(b);
 		
+		if(modifForm.getId() != 0) {
+			b.setId(modifForm.getId());
+		}
 		if(modifForm.getNom() != null) {
 			b.setNom(modifForm.getNom());
 		}
@@ -75,6 +79,10 @@ public class Cave {
 		if(modifForm.getImage() != null) {
 			b.setImage(modifForm.getImage());
 		}
+		
+		this.caveAVin.remove(this.findBouteille(modifForm.getId()));
+		this.caveAVin.put(b, quantite);
+		
 		if(modifForm.getQuantite() != 0) {
 			this.caveAVin.replace(b, (int) this.caveAVin.get(b) + modifForm.getQuantite());
 		}
