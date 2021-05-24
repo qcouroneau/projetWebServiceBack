@@ -51,7 +51,7 @@ public class Cave {
 		while(iterator.hasNext()) {
 			Map.Entry<Bouteille, Integer> entry = iterator.next();
 			if(entry.getKey().getId() == _id) {
-				b = (Bouteille) entry;
+				b = entry.getKey();
 			}
 		}
 		return b;
