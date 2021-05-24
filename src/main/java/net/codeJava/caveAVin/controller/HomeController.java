@@ -60,7 +60,7 @@ public class HomeController {
 	@RequestMapping(value="/ajoutUtilisateur", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void ajoutUtilisateur(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		ListOfUsers.getInstance().ajoutUtilisateur(loginForm.getNom(), loginForm.getPrenom(), loginForm.getLogin(), loginForm.getPassword());
+		ListOfUsers.getInstance().ajoutUtilisateur(loginForm.getNom(), loginForm.getPrenom(), loginForm.getLogin(), loginForm.getPassword(), loginForm.getEmail());
 	}
 	
 	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
