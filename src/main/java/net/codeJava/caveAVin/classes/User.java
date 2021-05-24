@@ -1,18 +1,42 @@
 package net.codeJava.caveAVin.classes;
 
+import net.codeJava.caveAVin.jsonObject.LoginForm;
+import net.codeJava.caveAVin.jsonObject.ModifForm;
+
 public class User {
 	private String nom;
 	private String prenom;
 	private String login;
 	private String password;
+	private String email;
 	private Cave cave;
 	
-	public User(String _nom, String _prenom, String _login, String _password) {
+	public User(String _nom, String _prenom, String _login, String _password, String _email) {
 		this.nom = _nom;
 		this.prenom = _prenom;
 		this.login = _login;
 		this.password = _password;
+		this.email = _email;
 		this.cave = new Cave();
+	}
+	
+	public void modifierUtilisateur(LoginForm loginForm) {
+				
+		if(loginForm.getNom() != null) {
+			this.nom = loginForm.getNom();
+		}
+		if(loginForm.getLogin() != null) {
+			this.login = loginForm.getLogin();
+		}
+		if(loginForm.getPassword() != null) {
+			this.password = loginForm.getPassword();
+		}
+		if(loginForm.getPrenom() != null) {
+			this.prenom = loginForm.getPrenom();
+		}
+		if(loginForm.getEmail() != null) {
+			this.email = loginForm.getEmail();
+		}
 	}
 	
 	public String getNom() {
@@ -37,6 +61,14 @@ public class User {
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public String getPassword() {

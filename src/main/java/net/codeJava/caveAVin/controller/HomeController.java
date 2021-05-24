@@ -69,15 +69,15 @@ public class HomeController {
 		this.currentUser.getCave().ajoutNouvelleBouteille(new Bouteille(modifForm.getNom(), modifForm.getCepage(), modifForm.getAnnee(), modifForm.getDescription()), modifForm.getQuantite());
 	}
 	
-	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value="/supprimerBouteille/{string}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void supprimerBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void supprimerBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		
-		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
-			this.currentUser.getCave().supprimerBouteille(modifForm.getId());
+		if(this.currentUser.getCave().bouteilleExiste(Integer.parseInt(id))) {
+			this.currentUser.getCave().supprimerBouteille(Integer.parseInt(id));
 			response.getWriter().write("1");
 		} else {
 			response.getWriter().write("-1");
@@ -99,37 +99,47 @@ public class HomeController {
 		}
 	}
 	
+	@PostMapping(value = "/modifierUtilisateur", consumes = "application/json", produces = "application/json")
+	@CrossOrigin(origins = "http://localhost:4200")	
+	public void modifierUtilisateur(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+				
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    
+	    this.currentUser.modifierUtilisateur(loginForm);
+	}
+	
 	@RequestMapping(value="/recupererBouteilles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
 	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HashMap<Bouteille, Integer> caveAVin = this.currentUser.getCave().getCave();
 		String bouteillesJsonString = new Gson().toJson(caveAVin.keySet());
+		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(bouteillesJsonString);
 	}
 	
 	@RequestMapping(value="/recupererBouteille/{string}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin(origins = "http://localhost:4200/")
-    public void returnBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        Bouteille b = null;
-
-        if(this.currentUser.getCave().bouteilleExiste(Integer.parseInt(id))) {
-            b = this.currentUser.getCave().recupBouteille(Integer.parseInt(id));
-        } 
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        if(b != null) {
-            String bouteille = new Gson().toJson(b);
-
-            response.getWriter().write(bouteille);
-        } else {
-            response.getWriter().write("-1");
-        }
-    }
-	
+	@CrossOrigin(origins = "http://localhost:4200")
+	public void returnBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		
+		Bouteille b = null;
+		
+		if(this.currentUser.getCave().bouteilleExiste(Integer.parseInt(id))) {
+			b = this.currentUser.getCave().recupBouteille(Integer.parseInt(id));
+		} 
+		
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+		
+		if(b != null) {
+			String bouteille = new Gson().toJson(b);
+			
+		    response.getWriter().write(bouteille);
+		} else {
+			response.getWriter().write("-1");
+		}
+	}
 }
