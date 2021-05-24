@@ -1,7 +1,6 @@
 package net.codeJava.caveAVin.classes;
 
 import net.codeJava.caveAVin.jsonObject.LoginForm;
-import net.codeJava.caveAVin.jsonObject.ModifForm;
 
 public class User {
 	private String nom;
