@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,13 +51,13 @@ public class HomeController {
 		}
 	}
 	
-	@PostMapping(value = "/connexion", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/deconnexion", consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void deconnexion(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		this.currentUser = null;
 	}
 	
-	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
+	@RequestMapping(value="/ajoutUtilisateur", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void ajoutUtilisateur(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		ListOfUsers.getInstance().ajoutUtilisateur(loginForm.getNom(), loginForm.getPrenom(), loginForm.getLogin(), loginForm.getPassword());
@@ -65,7 +66,7 @@ public class HomeController {
 	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void ajoutBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		this.currentUser.getCave().ajoutNouvelleBouteille(new Bouteille(modifForm.getNom(), modifForm.getCepage(), modifForm.getAnnee(), modifForm.getAnnee()), modifForm.getQuantite());
+		this.currentUser.getCave().ajoutNouvelleBouteille(new Bouteille(modifForm.getNom(), modifForm.getCepage(), modifForm.getAnnee(), modifForm.getDescription()), modifForm.getQuantite());
 	}
 	
 	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
@@ -104,31 +105,31 @@ public class HomeController {
 	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HashMap<Bouteille, Integer> caveAVin = this.currentUser.getCave().getCave();
 		String bouteillesJsonString = new Gson().toJson(caveAVin.keySet());
-		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 	    response.getWriter().write(bouteillesJsonString);
 	}
 	
-	@RequestMapping(value="/recupererBouteilles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@CrossOrigin(origins = "http://localhost:4200")
-	public void returnBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
-		Bouteille b = null;
-		
-		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
-			b = this.currentUser.getCave().recupBouteille(modifForm.getId());
-		} 
-		
-		response.setContentType("application/json");
-	    response.setCharacterEncoding("UTF-8");
-		
-		if(b != null) {
-			String bouteille = new Gson().toJson(b);
-			
-		    response.getWriter().write(bouteille);
-		} else {
-			response.getWriter().write("-1");
-		}
-	}
+	@RequestMapping(value="/recupererBouteille/{string}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin(origins = "http://localhost:4200/")
+    public void returnBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Bouteille b = null;
+
+        if(this.currentUser.getCave().bouteilleExiste(Integer.parseInt(id))) {
+            b = this.currentUser.getCave().recupBouteille(Integer.parseInt(id));
+        } 
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        if(b != null) {
+            String bouteille = new Gson().toJson(b);
+
+            response.getWriter().write(bouteille);
+        } else {
+            response.getWriter().write("-1");
+        }
+    }
+	
 }
