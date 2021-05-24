@@ -69,15 +69,15 @@ public class HomeController {
 		this.currentUser.getCave().ajoutNouvelleBouteille(new Bouteille(modifForm.getNom(), modifForm.getCepage(), modifForm.getAnnee(), modifForm.getDescription()), modifForm.getQuantite());
 	}
 	
-	@RequestMapping(value="/supprimerBouteille", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value="/supprimerBouteille/{string}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void supprimerBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void supprimerBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		
-		if(this.currentUser.getCave().bouteilleExiste(modifForm.getId())) {
-			this.currentUser.getCave().supprimerBouteille(modifForm.getId());
+		if(this.currentUser.getCave().bouteilleExiste(Integer.parseInt(id))) {
+			this.currentUser.getCave().supprimerBouteille(Integer.parseInt(id));
 			response.getWriter().write("1");
 		} else {
 			response.getWriter().write("-1");
