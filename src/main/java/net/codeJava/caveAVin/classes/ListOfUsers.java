@@ -18,4 +18,8 @@ public class ListOfUsers {
 	public ArrayList<User> getList() {
 		return list;
 	}
+	
+	public void ajoutUtilisateur(String _nom, String _prenom, String _login, String _password) {
+		this.list.add(new User(_nom, _prenom, _login, _password));
+	}
 }

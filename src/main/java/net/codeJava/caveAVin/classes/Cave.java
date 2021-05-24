@@ -42,6 +42,20 @@ public class Cave {
 		}
 		return trouve;
 	}
+	
+	public Bouteille recupBouteille(int _id) {
+
+		Iterator<Map.Entry<Bouteille, Integer>> iterator = this.caveAVin.entrySet().iterator();
+		Bouteille b = null;
+
+		while(iterator.hasNext()) {
+			Map.Entry<Bouteille, Integer> entry = iterator.next();
+			if(entry.getKey().getId() == _id) {
+				b = (Bouteille) entry;
+			}
+		}
+		return b;
+	}
 
 	public void ajoutNouvelleBouteille(Bouteille bouteille, int quantite) {
 		this.caveAVin.put(bouteille, quantite);
