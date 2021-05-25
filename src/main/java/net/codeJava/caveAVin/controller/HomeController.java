@@ -149,7 +149,7 @@ public class HomeController {
 	@ResponseBody
 	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HashMap<Bouteille, Integer> caveAVin = this.currentUser.getCave().getCave();
-		String bouteillesJsonString = "";
+		String bouteillesJsonString = "{";
 		StringBuffer sb= new StringBuffer();
 		
 		Iterator<Map.Entry<Bouteille, Integer>> iterator = caveAVin.entrySet().iterator();
@@ -157,13 +157,13 @@ public class HomeController {
 		while(iterator.hasNext()) {
 			Map.Entry<Bouteille, Integer> entry = iterator.next();	
 			sb.append(new Gson().toJson(entry.getKey()));
+			
 			sb.deleteCharAt(sb.length()-1);
 			bouteillesJsonString += sb.toString();
-			bouteillesJsonString += ",\"quantite\":\"" + entry.getValue() + "\"}";
+			bouteillesJsonString += ",\"quantite\":\"" + entry.getValue() + "\"},\n";
 		}
 		
 		bouteillesJsonString += "}";
-
 		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
