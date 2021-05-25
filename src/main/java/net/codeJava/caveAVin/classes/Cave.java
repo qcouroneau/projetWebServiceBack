@@ -4,15 +4,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import net.codeJava.caveAVin.jsonObject.ModifForm;
+import net.codeJava.caveAVin.jsonObject.BouteilleForm;
 
 public class Cave {
+	/*
+	 *  Chaque cave personnelle stock l'ensemble des bouteilles dans une map 
+	 */
 	private HashMap<Bouteille, Integer> caveAVin = new HashMap<Bouteille, Integer>();
 
 	public Cave() {
 
 	}
 
+	/*
+	 * Fonction qui retourne un booléen vrai si l'id fournit en paramètre correspond à une bouteille présente dans la map
+	 */
 	public Bouteille findBouteille(int _id) {
 
 		Iterator<Map.Entry<Bouteille, Integer>> iterator = this.caveAVin.entrySet().iterator();
@@ -29,6 +35,9 @@ public class Cave {
 		return b;
 	}
 
+	/*
+	 * Fonction qui permet de chercher si un ID fournit correspond bien à une bouteille existante
+	 */
 	public Boolean bouteilleExiste(int _id) {
 
 		Iterator<Map.Entry<Bouteille, Integer>> iterator = this.caveAVin.entrySet().iterator();
@@ -56,6 +65,10 @@ public class Cave {
 		}
 		return b;
 	}
+	
+	public int recupQuantiteBouteille(Bouteille b) {
+		return this.caveAVin.get(b);
+	}
 
 	public void ajoutNouvelleBouteille(Bouteille bouteille, int quantite) {
 		this.caveAVin.put(bouteille, quantite);
@@ -66,12 +79,18 @@ public class Cave {
 		this.caveAVin.remove(b);
 	}
 
+	/*
+	 * Change la quantité d'un bouteille pour un id donné 
+	 */
 	public void changerQuantite(int _id, int quantite) {
 		Bouteille b = this.findBouteille(_id);
 		this.caveAVin.replace(b, (int) this.caveAVin.get(b) + quantite);
 	}
 
-	public void modifierBouteille(ModifForm modifForm) {
+	/*
+	 * Modifie les informations passées en paramètre, pour l'id d'un bouteille donnée
+	 */
+	public void modifierBouteille(BouteilleForm modifForm) {
 		Bouteille b = this.findBouteille(modifForm.getId());
 		int quantite = this.caveAVin.get(b);
 		

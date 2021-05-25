@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,17 +22,21 @@ import com.google.gson.Gson;
 import net.codeJava.caveAVin.classes.Bouteille;
 import net.codeJava.caveAVin.classes.ListOfUsers;
 import net.codeJava.caveAVin.classes.User;
-import net.codeJava.caveAVin.jsonObject.LoginForm;
-import net.codeJava.caveAVin.jsonObject.ModifForm;
+import net.codeJava.caveAVin.jsonObject.UserForm;
+import net.codeJava.caveAVin.jsonObject.BouteilleForm;
 
 @Controller
 public class HomeController {
 	
 	private User currentUser = null;
 	
+	/*
+	 * Fonction qui permet de récupérer un login et un mot de passe pour vérifier si l'utilisateur existe
+	 * Si l'utilisateur existe, ce servlet va permettre la connexion
+	 */
 	@PostMapping(value = "/connexion", consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void connexion(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void connexion(@RequestBody UserForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		for(User u: ListOfUsers.getInstance().getList()) {
 			if(u.getLogin().equals(loginForm.getLogin()) && u.getPassword().equals(loginForm.getPassword())) {
@@ -53,6 +56,9 @@ public class HomeController {
 		}
 	}
 	
+	/* 
+	 * Fonction qui déconnecte l'utilisateur courant de sa session
+	 */
 	@PostMapping(value = "/deconnexion", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws IOException {	
@@ -68,18 +74,27 @@ public class HomeController {
 		}
 	}
 	
+	/*
+	 * Fonction qui récupère un Nom, un prenom, un login, un mot de passe et un email, dans le but d'ajouter un nouvel utilisateur à la liste des utilisateurs
+	 */
 	@RequestMapping(value="/ajoutUtilisateur", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void ajoutUtilisateur(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void ajoutUtilisateur(@RequestBody UserForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		ListOfUsers.getInstance().ajoutUtilisateur(loginForm.getNom(), loginForm.getPrenom(), loginForm.getLogin(), loginForm.getPassword(), loginForm.getEmail());
 	}
 	
+	/*
+	 * Fonction qui récupère un nom, un cépage, une année, une description et une quantité pour ajouter une nouvelle bouteille à la liste des bouteilles
+	 */
 	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void ajoutBouteille(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void ajoutBouteille(@RequestBody BouteilleForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		this.currentUser.getCave().ajoutNouvelleBouteille(new Bouteille(modifForm.getNom(), modifForm.getCepage(), modifForm.getAnnee(), modifForm.getDescription()), modifForm.getQuantite());
 	}
 	
+	/*
+	 * Fonction qui permet de supprimer un bouteille de la liste grâce à son id
+	 */
 	@RequestMapping(value="/supprimerBouteille/{string}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void supprimerBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -95,9 +110,12 @@ public class HomeController {
 		}
 	}
 	
+	/*
+	 * Fonction qui permet de modifier la quatité de bouteilles disponible, pour une bouteille donnée
+	 */
 	@PostMapping(value = "/modifierBouteille", consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")	
-	public void modifierQuantite(@RequestBody ModifForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void modifierQuantite(@RequestBody BouteilleForm modifForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 				
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
@@ -110,9 +128,12 @@ public class HomeController {
 		}
 	}
 	
+	/*
+	 * Fonction qui permet à utilisateur de modifier ses informations (mot de passe, nom, email,... ) 
+	 */
 	@PostMapping(value = "/modifierUtilisateur", consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")	
-	public void modifierUtilisateur(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void modifierUtilisateur(@RequestBody UserForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {
 				
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
@@ -120,6 +141,9 @@ public class HomeController {
 	    this.currentUser.modifierUtilisateur(loginForm);
 	}
 	
+	/*
+	 * Fonction qui permet de récupérer l'ensemble des bouteilles, et leurs informations présentes dans la liste 
+	 */
 	@RequestMapping(value="/recupererBouteilles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "http://localhost:4200")
 	@ResponseBody
@@ -143,22 +167,30 @@ public class HomeController {
 	    response.getWriter().write(bouteillesJsonString);
 	}
 	
+	/*
+	 * Fonction qui permet de récupérer une bouteille et ses informations, pour un ID donné 
+	 */
 	@RequestMapping(value="/recupererBouteille/{string}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void returnBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
+		StringBuffer sb= new StringBuffer();
 		Bouteille b = null;
+		int quantite = 0;
 		
 		if(this.currentUser.getCave().bouteilleExiste(Integer.parseInt(id))) {
 			b = this.currentUser.getCave().recupBouteille(Integer.parseInt(id));
+			quantite = this.currentUser.getCave().recupQuantiteBouteille(b);
 		} 
 		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
 		
 		if(b != null) {
-			String bouteille = new Gson().toJson(b);
-			
+			sb.append(new Gson().toJson(b));
+			sb.deleteCharAt(sb.length()-1);
+			String bouteille = sb.toString();
+			bouteille += ",\"quantite\":\"" + quantite + "\"}";
 		    response.getWriter().write(bouteille);
 		} else {
 			response.getWriter().write("-1");

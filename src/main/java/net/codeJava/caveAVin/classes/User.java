@@ -1,6 +1,6 @@
 package net.codeJava.caveAVin.classes;
 
-import net.codeJava.caveAVin.jsonObject.LoginForm;
+import net.codeJava.caveAVin.jsonObject.UserForm;
 
 public class User {
 	private String nom;
@@ -19,7 +19,10 @@ public class User {
 		this.cave = new Cave();
 	}
 	
-	public void modifierUtilisateur(LoginForm loginForm) {
+	/*
+	 * Modifie les informations passées en paramètre
+	 */
+	public void modifierUtilisateur(UserForm loginForm) {
 				
 		if(loginForm.getNom() != null) {
 			this.nom = loginForm.getNom();
