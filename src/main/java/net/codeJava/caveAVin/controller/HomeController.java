@@ -160,7 +160,8 @@ public class HomeController {
 			
 			sb.deleteCharAt(sb.length()-1);
 			bouteillesJsonString += sb.toString();
-			bouteillesJsonString += ",\"quantite\":\"" + entry.getValue() + "\"},\n";
+			bouteillesJsonString += ",\n\"quantite\":\"" + entry.getValue() + "\n\"},\n";
+			sb.setLength(0);
 		}
 		
 		bouteillesJsonString += "}";
