@@ -31,7 +31,7 @@ public class HomeController {
 	private User currentUser = null;
 	
 	/*
-	 * Fonction qui permet de récupérer un login et un mot de passe pour vérifier si l'utilisateur existe
+	 * Fonction qui permet de rÃ©cupÃ©rer un login et un mot de passe pour vÃ©rifier si l'utilisateur existe
 	 * Si l'utilisateur existe, ce servlet va permettre la connexion
 	 */
 	@PostMapping(value = "/connexion", consumes = "application/json", produces = "application/json")
@@ -57,7 +57,7 @@ public class HomeController {
 	}
 	
 	/* 
-	 * Fonction qui déconnecte l'utilisateur courant de sa session
+	 * Fonction qui dÃ©connecte l'utilisateur courant de sa session
 	 */
 	@PostMapping(value = "/deconnexion", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -75,7 +75,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui récupère un Nom, un prenom, un login, un mot de passe et un email, dans le but d'ajouter un nouvel utilisateur à la liste des utilisateurs
+	 * Fonction qui rÃ©cupÃ¨re un Nom, un prenom, un login, un mot de passe et un email, dans le but d'ajouter un nouvel utilisateur Ã  la liste des utilisateurs
 	 */
 	@RequestMapping(value="/ajoutUtilisateur", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -84,7 +84,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui récupère un nom, un cépage, une année, une description et une quantité pour ajouter une nouvelle bouteille à la liste des bouteilles
+	 * Fonction qui rÃ©cupÃ¨re un nom, un cÃ©page, une annÃ©e, une description et une quantitÃ© pour ajouter une nouvelle bouteille Ã  la liste des bouteilles
 	 */
 	@RequestMapping(value="/ajoutBouteille", method = RequestMethod.PUT)
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -93,7 +93,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui permet de supprimer un bouteille de la liste grâce à son id
+	 * Fonction qui permet de supprimer un bouteille de la liste grÃ¢ce Ã  son id
 	 */
 	@RequestMapping(value="/supprimerBouteille/{string}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -111,7 +111,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui permet de modifier la quatité de bouteilles disponible, pour une bouteille donnée
+	 * Fonction qui permet de modifier la quatitÃ© de bouteilles disponible, pour une bouteille donnÃ©e
 	 */
 	@PostMapping(value = "/modifierBouteille", consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")	
@@ -129,7 +129,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui permet à utilisateur de modifier ses informations (mot de passe, nom, email,... ) 
+	 * Fonction qui permet Ã  utilisateur de modifier ses informations (mot de passe, nom, email,... ) 
 	 */
 	@PostMapping(value = "/modifierUtilisateur", consumes = "application/json", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")	
@@ -142,7 +142,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui permet de récupérer l'ensemble des bouteilles, et leurs informations présentes dans la liste 
+	 * Fonction qui permet de rÃ©cupÃ©rer l'ensemble des bouteilles, et leurs informations prÃ©sentes dans la liste 
 	 */
 	@RequestMapping(value="/recupererBouteilles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "http://localhost:4200")
@@ -163,7 +163,10 @@ public class HomeController {
 			bouteillesJsonString += ",\n\"quantite\":\"" + entry.getValue() + "\"\n},\n";
 			sb.setLength(0);
 		}
-		bouteillesJsonString.substring(0, bouteillesJsonString.length()-1);
+		
+		sb.append(bouteillesJsonString);
+		sb.deleteCharAt(sb.length()-2);
+		bouteillesJsonString = sb.toString();
 		bouteillesJsonString += "]\n}";
 		
 		response.setContentType("application/json");
@@ -172,7 +175,7 @@ public class HomeController {
 	}
 	
 	/*
-	 * Fonction qui permet de récupérer une bouteille et ses informations, pour un ID donné 
+	 * Fonction qui permet de rÃ©cupÃ©rer une bouteille et ses informations, pour un ID donnÃ© 
 	 */
 	@RequestMapping(value="/recupererBouteille/{string}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@CrossOrigin(origins = "http://localhost:4200")
