@@ -2,13 +2,15 @@ package net.codeJava.caveAVin.controller;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,10 +53,19 @@ public class HomeController {
 		}
 	}
 	
-	@PostMapping(value = "/deconnexion", consumes = "application/json", produces = "application/json")
+	@PostMapping(value = "/deconnexion", produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
-	public void deconnexion(@RequestBody LoginForm loginForm, HttpServletRequest request, HttpServletResponse response) throws IOException {	
+	public void deconnexion(HttpServletRequest request, HttpServletResponse response) throws IOException {	
 		this.currentUser = null;
+		
+		response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+		
+		if(this.currentUser == null) {
+		    response.getWriter().write("1");
+		} else {
+		    response.getWriter().write("-1");
+		}
 	}
 	
 	@RequestMapping(value="/ajoutUtilisateur", method = RequestMethod.PUT)
@@ -114,7 +125,18 @@ public class HomeController {
 	@ResponseBody
 	public void returnBouteilles(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HashMap<Bouteille, Integer> caveAVin = this.currentUser.getCave().getCave();
-		String bouteillesJsonString = new Gson().toJson(caveAVin.keySet());
+		String bouteillesJsonString = "";
+		StringBuffer sb= new StringBuffer();
+		
+		Iterator<Map.Entry<Bouteille, Integer>> iterator = caveAVin.entrySet().iterator();
+		
+		while(iterator.hasNext()) {
+			Map.Entry<Bouteille, Integer> entry = iterator.next();	
+			sb.append(new Gson().toJson(entry.getKey()));
+			sb.deleteCharAt(sb.length()-1);
+			bouteillesJsonString += sb.toString();
+			bouteillesJsonString += ",\"quantite\":\"" + entry.getValue() + "\"}";
+		}
 		
 		response.setContentType("application/json");
 	    response.setCharacterEncoding("UTF-8");
