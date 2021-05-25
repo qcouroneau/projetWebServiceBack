@@ -95,7 +95,7 @@ public class HomeController {
 	/*
 	 * Fonction qui permet de supprimer un bouteille de la liste grÃ¢ce Ã  son id
 	 */
-	@RequestMapping(value="/supprimerBouteille/{string}", method = RequestMethod.DELETE, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value="/supprimerBouteille/{string}", method = RequestMethod.DELETE, produces = "application/json")
 	@CrossOrigin(origins = "http://localhost:4200")
 	public void supprimerBouteille(@PathVariable("string") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
