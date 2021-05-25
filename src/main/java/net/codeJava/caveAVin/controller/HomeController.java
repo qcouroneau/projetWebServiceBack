@@ -163,7 +163,7 @@ public class HomeController {
 			bouteillesJsonString += ",\n\"quantite\":\"" + entry.getValue() + "\"\n},\n";
 			sb.setLength(0);
 		}
-		
+		bouteillesJsonString.substring(0, bouteillesJsonString.length()-1);
 		bouteillesJsonString += "}";
 		
 		response.setContentType("application/json");
